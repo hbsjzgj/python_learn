@@ -139,6 +139,35 @@ K0  A0  B0  C0  D0
 K2  A2  B2  C2  D2
 '''
 
+#handle overlapping
+
+boys = pd.DataFrame({'k':['K0','K1','K2'],'age':[1,2,3]})
+girls = pd.DataFrame({'k':['K0','K0','K3'],'age':[4,5,6]})
+'''
+   age   k
+0    1  K0
+1    2  K1
+2    3  K2
+   age   k
+0    4  K0
+1    5  K0
+2    6  K3
+'''
+res=pd.merge(boys,girls,on='k',suffixes=['_boy','_girl'],how='inner')
+'''
+   age_boy   k  age_girl
+0        1  K0         4
+1        1  K0         5
+'''
+res=pd.merge(boys,girls,on='k',suffixes=['_boy','_girl'],how='outer')
+'''
+   age_boy   k  age_girl
+0      1.0  K0       4.0
+1      1.0  K0       5.0
+2      2.0  K1       NaN
+3      3.0  K2       NaN
+4      NaN  K3       6.0
+'''
 print(res)
 
 
